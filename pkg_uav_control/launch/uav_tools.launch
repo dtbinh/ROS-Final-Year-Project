@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+
+<node name="uavController" pkg="pkg_uav_control" type="uavController" output="screen" />
+<node name="collisionDetection" pkg="pkg_uav_control" type="collisionDetection" output="screen" />
+
+</launch>

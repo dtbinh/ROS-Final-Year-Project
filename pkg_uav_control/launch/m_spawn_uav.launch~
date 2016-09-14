@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<launch>
+   
+  <!-- Start Gazebo with wg world running in (max) realtime -->
+  <!-- <include file="$(find hector_gazebo_worlds)/launch/willow_garage.launch"/> -->
+
+<include file="$(find pkg_uav_control)/launch/uav_simulate.launch" /> 
+   
+  <!-- Spawn simulated quadrotor uavs --> 
+ <include file="$(find pkg_uav_control)/launch/spawn_a_uav.launch" >
+  
+  </include>
+
+  
+  <!--Start rviz visualization with preset config 
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find pkg_uav_control)/rviz_cfg/uav_flight.rviz"/> -->
+   
+</launch>

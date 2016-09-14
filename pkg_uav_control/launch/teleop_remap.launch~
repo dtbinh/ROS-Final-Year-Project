@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<launch>
+<node name="teleopUAVController" pkg="pkg_uav_control" type="teleopUAVController" output="screen">
+	<remap from="/uav1/cmd_vel" to="cmd_vel"/>
+</node>
+</launch>

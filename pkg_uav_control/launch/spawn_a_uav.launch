@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<launch>
+<arg name="model" value="$(find hector_quadrotor_description)/urdf/quadrotor_downward_cam.gazebo.xacro"/>
+<!-- <arg name="model" value="$(find hector_quadrotor_description)/urdf/quadrotor_with_asus_with_hokuyo_utm30lx.urdf.xacro" /> -->
+
+<!-- <arg name="model" value="$(find hector_quadrotor_description)/urdf/quadrotor_with_kinect.urdf.xacro" /> -->
+
+<arg name="use_ground_truth_for_tf" default="true"/>
+
+<!-- Spawn UAV1 -->
+   <group ns="uav1">
+     <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+       <arg name="name" value="uav1" />
+       <arg name="tf_prefix" value="uav1" />
+       <arg name="model" value="$(arg model)" />
+      	<arg name="y" value="-1.0" /> <!-- -2.0 -->
+	 <arg name="x" value="0.0" /><!-- 0.0 -->
+       <arg name="use_ground_truth_for_tf" value="$(arg use_ground_truth_for_tf)" />
+     </include>
+   </group>
+<!-- **************************** -->
+<!-- Spawn UAV2 -->
+   <group ns="uav2">
+     <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+       <arg name="name" value="uav2" />
+       <arg name="tf_prefix" value="uav2" />
+       <arg name="model" value="$(arg model)" />
+       <arg name="y" value="-4.0" /> <!-- 7.0 -->
+	<arg name="x" value="0.0" /> <!-- 0.0 -->
+       <arg name="use_ground_truth_for_tf" value="$(arg use_ground_truth_for_tf)" />
+     </include>
+   </group>
+<!-- **************************** -->
+<!-- Spawn UAV3 -->
+   <group ns="uav3">
+     <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+       <arg name="name" value="uav3" />
+       <arg name="tf_prefix" value="uav3" />
+       <arg name="model" value="$(arg model)" />
+       <arg name="y" value="-7.0" /> <!-- -14.0 -->
+	<arg name="x" value="0.0" /> <!-- 0.0 -->
+       <arg name="use_ground_truth_for_tf" value="$(arg use_ground_truth_for_tf)" />
+     </include>
+   </group>
+ <!-- **************************** -->
+
+
+</launch>
+
+

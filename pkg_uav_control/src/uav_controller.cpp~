@@ -1,0 +1,74 @@
+/*
+ * uav_controller.cpp
+ *
+ *  Created on: 22 Mar 2014
+ *      Author: optimus
+ */
+
+#include <pkg_uav_control/uav_controller.hpp>
+
+namespace uav{
+	UavController::UavController(){
+		uav1_cmd_topic_="/uav1/cmd_vel";
+		uav2_cmd_topic_="/uav2/cmd_vel";
+		uav3_cmd_topic_="/uav3/cmd_vel";
+		uav4_cmd_topic_="/uav4/cmd_vel";
+		uav5_cmd_topic_="/uav5/cmd_vel";
+		nh_st_="UavController";
+
+		subCmd();
+
+	}
+
+	UavController::~UavController(){
+
+	}
+
+	void UavController::subCmd(){
+		nh = new ros::NodeHandle(nh_st_);
+		cmd_subscriber_ = nh->subscribe(uav1_cmd_topic_, 1, &UavController::Uav1CmdCallback, this);
+
+
+		ROS_INFO_STREAM("subscribed");
+		cmd_1_publisher_ = nh->advertise<geometry_msgs::Twist>(uav2_cmd_topic_, 1);
+		cmd_2_publisher_ = nh->advertise<geometry_msgs::Twist>(uav3_cmd_topic_, 1);
+		cmd_3_publisher_ = nh->advertise<geometry_msgs::Twist>(uav4_cmd_topic_, 1);
+		cmd_4_publisher_ = nh->advertise<geometry_msgs::Twist>(uav5_cmd_topic_, 1);
+
+
+	}
+
+	void UavController::Uav1CmdCallback(const geometry_msgs::TwistConstPtr& gmt){
+
+		ROS_INFO_STREAM("**** HEADER CMD_VEL ****");
+		ROS_INFO_STREAM("linear.x : " << gmt->linear.x);
+		ROS_INFO_STREAM("linear.y : " << gmt->linear.y);
+		ROS_INFO_STREAM("linear.z : " << gmt->linear.z);
+		ROS_INFO_STREAM("angular.x : " << gmt->angular.x);
+		ROS_INFO_STREAM("angular.y : " << gmt->angular.y);
+		ROS_INFO_STREAM("angular.z : " << gmt->angular.z);
+		ROS_INFO_STREAM("**** -------------- ****");
+
+		cmd_1_publisher_.publish(gmt);
+		cmd_2_publisher_.publish(gmt);
+		cmd_3_publisher_.publish(gmt);
+		cmd_4_publisher_.publish(gmt);
+
+		ROS_INFO_STREAM("Published");
+
+
+	}
+
+
+}
+int main(int argc, char** argv)
+{
+  ros::init(argc, argv, "UavController");
+  uav::UavController uc;
+  ros::spin();
+  return 0;
+}
+
+
+
+

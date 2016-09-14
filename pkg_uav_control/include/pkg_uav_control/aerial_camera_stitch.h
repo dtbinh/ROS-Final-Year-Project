@@ -1,0 +1,118 @@
+/*
+ * uav_camera_stitch.h
+ *
+ *  Created on: 18 Mar 2014
+ *      Author: optimus
+ */
+
+#ifndef AERIAL_CAMERA_STITCH_H_
+#define AERIAL_CAMERA_STITCH_H_
+
+#include <stdio.h>
+#include <iostream>
+
+#include <ros/callback_queue.h>
+#include <ros/ros.h>
+
+#include <std_msgs/Empty.h>
+#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/PoseStamped.h>
+
+#include <image_transport/image_transport.h>
+#include <cv_bridge/cv_bridge.h>
+#include <sensor_msgs/image_encodings.h>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
+#include "opencv2/core/core.hpp"
+#include "opencv2/features2d/features2d.hpp"
+#include "opencv2/nonfree/nonfree.hpp"
+#include "opencv2/calib3d/calib3d.hpp"
+#include "opencv2/stitching/stitcher.hpp"
+#include "opencv2/opencv.hpp"
+
+
+
+
+namespace enc = sensor_msgs::image_encodings;
+
+
+namespace uav {
+class AerialCameraStitch {
+
+public:
+	AerialCameraStitch();
+	~AerialCameraStitch();
+
+
+private:
+	
+	// general
+	ros::NodeHandle* nh;
+	ros::CallbackQueue callback_queue_;
+	
+	// camera capture and publishing
+	image_transport::ImageTransport* it_;
+	image_transport::Subscriber it_uav1_sub_;
+	image_transport::Subscriber it_uav2_sub_;
+	image_transport::Subscriber it_uav3_sub_;
+	image_transport::Subscriber it_uav4_sub_;
+	image_transport::Subscriber it_uav5_sub_;
+	image_transport::Publisher it_pub_;
+	
+
+
+	void subCameraImages();
+	void stitchCameraImages();
+
+	
+	//callbacks
+	void Camera1Callback(const sensor_msgs::ImageConstPtr&);
+	void Camera2Callback(const sensor_msgs::ImageConstPtr&);
+	void Camera3Callback(const sensor_msgs::ImageConstPtr&);
+	void Camera4Callback(const sensor_msgs::ImageConstPtr&);
+	void Camera5Callback(const sensor_msgs::ImageConstPtr&);
+	void ImageStitchCallback(const std_msgs::EmptyConstPtr&);
+	
+	void UAVPoseCallback(const geometry_msgs::PoseStamped&);
+	void UAVPoseOUTCallback(const std_msgs::EmptyConstPtr&);
+	//void ImagePanoCallback(const std_msgs::EmptyConstPtr&);
+	
+
+	ros::Subscriber imgstitch_subscriber_;
+	ros::Subscriber uavpose;
+	ros::Subscriber uavpose_;
+	ros::Publisher imgstitch_publisher_;
+	ros::Publisher cmd_pub;
+
+	std::string nh_str_;
+	std::string uav1_cam_topic_;
+	std::string uav2_cam_topic_;
+	std::string uav3_cam_topic_;
+	std::string uav4_cam_topic_;
+	std::string uav5_cam_topic_;
+	std::string uavpose_topic_;
+	std::string uavpose_z_;
+
+	double uavpose_z;
+	int uav_int_pose;
+
+	bool opt_pose;
+	bool rtn_pose;
+
+	geometry_msgs::Twist cmd;
+
+	std::string cam_uav_out_;
+	std::string img_stitch_topic_;
+	
+	cv::Mat uav1_cam_img;
+	cv::Mat uav2_cam_img;
+	cv::Mat uav3_cam_img;
+	cv::Mat uav4_cam_img;
+	cv::Mat uav5_cam_img;
+
+
+};
+}
+
+#endif /* AERIAL_CAMERA_STITCH_H_ */
